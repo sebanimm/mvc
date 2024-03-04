@@ -1,0 +1,28 @@
+{
+  "name": "mvc",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node --watch --env-file=.env src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebanimm/mvc.git"
+  },
+  "author": "sebanimm <gks32114221@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sebanimm/mvc/issues"
+  },
+  "homepage": "https://github.com/sebanimm/mvc#readme",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "mysql2": "^3.9.2",
+    "sequelize": "^6.37.1"
+  },
+  "devDependencies": {}
+}
