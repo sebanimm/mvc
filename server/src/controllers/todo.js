@@ -1,29 +1,30 @@
 const express = require("express");
-const { getTodos, updateTodo, addTodo, deleteTodo } = require("../models/todo");
+const TodoService = require("../services/todoService");
+const todoService = new TodoService();
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const data = await getTodos();
+  const data = await todoService.findAllTodos();
   res.json(data);
 });
 
 router.post("/", async (req, res) => {
   const { todo } = req.body;
-  await addTodo(todo);
-  res.send(200);
+  await todoService.createTodo(todo);
+  res.sendStatus(200);
 });
 
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { isFinished } = req.body;
-  await updateTodo(id, isFinished);
-  res.send(200);
+  await todoService.updateTodo(id, isFinished);
+  res.sendStatus(200);
 });
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
-  await deleteTodo(id);
-  res.send(200);
+  await todoService.deleteTodo(id);
+  res.sendStatus(200);
 });
 
 module.exports = router;

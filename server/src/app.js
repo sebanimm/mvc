@@ -1,16 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./database/models");
-const router = require("./mvc/controllers/todo");
-
-db.sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log("✅ DB Connected!");
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+const router = require("./controllers/todo");
 
 const app = express();
 
