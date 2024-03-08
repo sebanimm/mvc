@@ -3,7 +3,7 @@ import { getTodos, updateTodo, addTodo, deleteTodo } from "./api";
 
 function App() {
   const [input, setInput] = useState("");
-  const [a, setA] = useState(0);
+  const [reload, setReload] = useState(0);
   const [todos, setTodos] = useState([]);
 
   const handleInput = (e) => {
@@ -12,19 +12,20 @@ function App() {
   };
 
   const handleButton = async () => {
-    setA((prev) => prev + 1);
     await addTodo(input);
+    setReload((prev) => prev + 1);
     setInput("");
   };
 
   const handleDelete = async (todoId) => {
     const data = await deleteTodo(todoId);
+    setReload((prev) => prev + 1);
     console.log(data);
   };
 
   const handleUpdate = async (todoId, isFinished) => {
-    console.log(isFinished);
     const data = await updateTodo(todoId, !isFinished);
+    setReload((prev) => prev + 1);
     console.log(data);
   };
 
@@ -36,7 +37,7 @@ function App() {
 
   useEffect(() => {
     getTodo();
-  }, [a]);
+  }, [reload]);
 
   return (
     <div className="App">
