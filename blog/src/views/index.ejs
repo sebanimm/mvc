@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Blog</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mt-5 mb-3">Simple Blog</h1>
+      <a href="/create" class="btn btn-primary mb-3">New Post</a>
+      <div class="list-group">
+        <% for(const post of data) { %> <% const { postId, title, date, author }
+        = post; %>
+        <a
+          href="/update/<%=postId%>"
+          class="list-group-item list-group-item-action"
+        >
+          <h5 class="mb-1"><%=title%></h5>
+          <small><%= date %></small>
+          <p class="mb-1"><%= author %></p>
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </body>
+</html>
