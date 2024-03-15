@@ -1,22 +1,18 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const PostService = require("../services/postService");
 const postService = new PostService();
 const router = express.Router();
-const dirname = "C:/files/codes/main/mvc/blog/src/views";
-
-const jsonParser = bodyParser.json();
 
 router.get("/", async (req, res) => {
   const data = await postService.findAllPosts();
-  res.render(`${dirname}/index`, { data });
+  res.render("../views/index", { data });
 });
 
 router.get("/create", async (req, res) => {
-  res.render(`${dirname}/create`);
+  res.render("../views/create");
 });
 
-router.post("/create", jsonParser, async (req, res) => {
+router.post("/create", async (req, res) => {
   const { title, content, author } = req.body;
   console.log(req.body);
   await postService.createPost(title, content, author);
@@ -27,10 +23,10 @@ router.post("/create", jsonParser, async (req, res) => {
 router.get("/update/:id", async (req, res) => {
   const { id } = req.params;
   const data = await postService.findOnePost(id);
-  res.render(`${dirname}/update`, { data: data[0] });
+  res.render("../views/update", { data: data[0] });
 });
 
-router.post("/update/:id", jsonParser, async (req, res) => {
+router.post("/update/:id", async (req, res) => {
   const { id } = req.params;
   const { title, content, author } = req.body;
   await postService.updatePost(id, title, content, author);
