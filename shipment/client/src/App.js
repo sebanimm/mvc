@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./tailwind.css";
 import Main from "./pages/Main";
 import Order from "./pages/Order";
-import UserSignUp from "./pages/UserSignUp";
+import UserSignUp from "./pages/UserSignup";
 import WorkerSignUp from "./pages/WorkerSignUp";
 import OrderList from "./pages/OrderList";
 
