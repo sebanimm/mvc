@@ -23,9 +23,9 @@ class ReservationService {
     select ${number}, '${name}', '${gender}'
     from dual 
     where not exists 
-    (select number, name, gender
+    (select number, gender
       from student 
-      where number=${number} and name=${name} and gender=${gender});`;
+      where number=${number} and gender='${gender}');`;
     await this.executeQuery(sql);
   }
 
@@ -40,8 +40,8 @@ class ReservationService {
     from dual 
     where not exists 
     (select name, professor, credit
-      from enrollment 
-      where name='${name}', professor='${professor}', credit=${credit});`;
+      from course 
+      where name='${name}' and professor='${professor}' and credit=${credit});`;
     await this.executeQuery(sql);
   }
 
