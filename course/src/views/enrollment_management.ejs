@@ -1,5 +1,3 @@
-<!-- templates/enrollment_management.html -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -20,17 +18,17 @@
         <div class="form-group">
           <label for="student_id">Student:</label>
           <select class="form-control" id="student_id" name="student_id">
-            <% for (let student of students) { %>
+            <% for (const student of students) { %>
             <option value="<%= student.id %>"><%= student.name %></option>
             <% } %>
           </select>
         </div>
         <div class="form-group">
-          <label for="course_id">Course:</label>
-          <select class="form-control" id="course_id" name="course_id">
-            <% for (let course of courses) { %>
-            <option value="<%= course.id %>">
-              <%= course.name %>[<%= course.professor %>]
+          <label for="lecture_id">Lecture:</label>
+          <select class="form-control" id="lecture_id" name="lecture_id">
+            <% for (const lecture of lectures) { %>
+            <option value="<%= lecture.id %>">
+              <%= lecture.course_name %>[<%= lecture.professor_name %>]
             </option>
             <% } %>
           </select>
@@ -65,12 +63,12 @@
           </tr>
         </thead>
         <tbody>
-          <% for (let enrollment of enrollments) { %>
+          <% for (const enrollment of enrollments) { %>
           <tr>
             <td><%= enrollment.student_number %></td>
             <td><%= enrollment.student_name %></td>
             <td><%= enrollment.course_name %></td>
-            <td><%= enrollment.professor %></td>
+            <td><%= enrollment.professor_name %></td>
             <td><%= enrollment.credit %></td>
           </tr>
           <% } %>

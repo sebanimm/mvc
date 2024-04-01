@@ -34,19 +34,20 @@ router.post("/register_course", async (req, res) => {
 
 router.get("/enrollment_management", async (req, res) => {
   const students = await enrollmentService.getAllStudents();
-  const courses = await enrollmentService.getAllCourses();
+  const lectures = await enrollmentService.getAllLectures();
   const enrollments = await enrollmentService.getAllEnrollments();
   res.render(`${VIEW_DIRECTORY}/enrollment_management`, {
     students,
-    courses,
+    lectures,
     enrollments,
   });
 });
 
 router.post("/register_enrollment", async (req, res) => {
   if (!req.body) res.redirect("/enrollment_management");
-  const { student_id, course_id } = req.body;
-  await enrollmentService.createEnrollment(student_id, course_id);
+  const { student_id, lecture_id } = req.body;
+  const [{ courseId }] = await enrollmentService.getCourseId(lecture_id);
+  await enrollmentService.createEnrollment(student_id, courseId, lecture_id);
   res.redirect("/enrollment_management");
 });
 
@@ -55,6 +56,49 @@ router.post("/cancel_enrollment", async (req, res) => {
   const { enrollment_id } = req.body;
   await enrollmentService.cancelEnrollment(enrollment_id);
   res.redirect("/enrollment_management");
+});
+
+router.get("/professor_management", async (req, res) => {
+  const professors = await enrollmentService.getAllProfessors();
+  res.render(`${VIEW_DIRECTORY}/professor_management`, { professors });
+});
+
+router.post("/register_professor", async (req, res) => {
+  if (!req.body) res.redirect("/professor_management");
+  const { name, major, email } = req.body;
+  await enrollmentService.createProfessor(name, major, email);
+  res.redirect("/professor_management");
+});
+
+router.get("/lecture_management", async (req, res) => {
+  const professors = await enrollmentService.getAllProfessors();
+  const courses = await enrollmentService.getAllCourses();
+  const lectures = await enrollmentService.getAllLectures();
+  res.render(`${VIEW_DIRECTORY}/lecture_management`, {
+    professors,
+    courses,
+    lectures,
+  });
+});
+
+router.post("/register_lecture", async (req, res) => {
+  if (!req.body) res.redirect("/lecture_management");
+  const { professor_id, course_id, day, start_time, end_time } = req.body;
+  await enrollmentService.createLecture(
+    professor_id,
+    course_id,
+    day,
+    start_time,
+    end_time,
+  );
+  res.redirect("/lecture_management");
+});
+
+router.post("/cancel_lecture", async (req, res) => {
+  if (!req.body) res.redirect("/lecture_management");
+  const { lecture_id } = req.body;
+  await enrollmentService.cancelEnrollment(lecture_id);
+  res.redirect("/lecture_management");
 });
 
 module.exports = router;
