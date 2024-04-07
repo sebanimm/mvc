@@ -96,6 +96,22 @@ class ReservationService {
     return await this.executeQuery(sql);
   }
 
+  async getStudentLecture(name) {
+    const sql = `select s.name, l.id, c.id as courseId, c.name as course_name, p.name as professor_name, p.major as professor_major, c.credit, l.day, l.startTime as start_time, l.endTime as end_time
+    from course c, professor p, lecture l, student s
+    where l.professorId = p.id and l.courseId = c.id
+    having s.name='${name}'`;
+    return await this.executeQuery(sql);
+  }
+
+  async getTeacherLecture(name) {
+    const sql = `select s.name as student_name, l.id, c.id as courseId, c.name as course_name, p.name as professor_name, p.major as professor_major, c.credit, l.day, l.startTime as start_time, l.endTime as end_time
+    from course c, professor p, lecture l, student s, enrollment e
+    where l.professorId = p.id and l.courseId = c.id and e.studentId = s.id
+    having p.name='${name}';`;
+    return await this.executeQuery(sql);
+  }
+
   async createLecture(professorId, courseId, day, startTime, endTime) {
     const sql = `insert into lecture(professorId, courseId, day, startTime, endTime)
       select '${professorId}', '${courseId}', '${day}', '${startTime}', '${endTime}'

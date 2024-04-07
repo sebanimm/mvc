@@ -3,7 +3,7 @@ const { VIEW_DIRECTORY } = require("../constants");
 const EnrollmentService = require("../services/enrollmentService");
 const enrollmentService = new EnrollmentService();
 const router = express.Router();
-
+const print = console.log;
 router.get("/", async (req, res) => {
   res.render(`${VIEW_DIRECTORY}/index`);
 });
@@ -41,6 +41,54 @@ router.get("/enrollment_management", async (req, res) => {
     lectures,
     enrollments,
   });
+});
+
+router.get("/timetable/student/:name", async (req, res) => {
+  const { name } = req.params;
+  const lectures = await enrollmentService.getStudentLecture(name);
+  let a = [[], [], [], [], []];
+  for (const lecture of lectures) {
+    if (lecture.day === "2025년 3월 5일") continue;
+    a[lecture.day].push(lecture);
+  }
+  for (let i = 0; i < 5; i++) {
+    a[i].sort(function (a, b) {
+      const aa = parseInt(a.start_time.substring(0, 2)) + a.credit;
+      const bb = parseInt(b.start_time.substring(0, 2)) + b.credit;
+      if (aa > bb) {
+        return 1;
+      }
+      if (aa < bb) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+  res.send(a);
+});
+
+router.get("/timetable/professor/:name", async (req, res) => {
+  const { name } = req.params;
+  const lectures = await enrollmentService.getTeacherLecture(name);
+  let a = [[], [], [], [], []];
+  for (const lecture of lectures) {
+    if (lecture.day === "2025년 3월 5일") continue;
+    a[lecture.day].push(lecture);
+  }
+  for (let i = 0; i < 5; i++) {
+    a[i].sort(function (a, b) {
+      const aa = parseInt(a.start_time.substring(0, 2)) + a.credit;
+      const bb = parseInt(b.start_time.substring(0, 2)) + b.credit;
+      if (aa > bb) {
+        return 1;
+      }
+      if (aa < bb) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+  res.send(a);
 });
 
 router.post("/register_enrollment", async (req, res) => {

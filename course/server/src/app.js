@@ -9,8 +9,8 @@ const app = express();
 app.set("views", VIEW_DIRECTORY);
 app.set("view engine", "ejs");
 
-app.use(express.static(VIEW_DIRECTORY));
 app.use(cors());
+app.use(express.static(VIEW_DIRECTORY));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", express.json());
 app.use("/", router);
