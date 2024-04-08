@@ -52,8 +52,8 @@ class ReservationService {
 
   async getAllEnrollments() {
     const sql = `select s.number as student_number, s.name as student_name, c.name as course_name, p.name as professor_name, c.credit
-    from student s, course c, enrollment e, professor p
-    where e.studentId = s.id and e.courseId = c.id and e.lectureId = p.id;`;
+    from student s, course c, enrollment e, professor p, lecture l
+    where e.studentId = s.id and e.courseId = c.id and e.lectureId = l.id and l.professorId = p.id;`;
     return await this.executeQuery(sql);
   }
 

@@ -3,7 +3,7 @@ import React from "react";
 function App() {
   const [input1, setInput1] = React.useState("");
   const [input2, setInput2] = React.useState("");
-  const [time, setTime] = React.useState([[], [], [], [], []]);
+  const [time, setTime] = React.useState([[], [], [], [], [], [], []]);
   const search1 = async (e) => {
     const res = await fetch(
       `http://localhost:8080/timetable/student/${input1}`,
@@ -22,8 +22,6 @@ function App() {
     setTime(data);
   };
 
-  React.useEffect(() => {}, []);
-
   return (
     <div style={{ width: "800px" }}>
       <h2>Timetable</h2>
@@ -41,64 +39,54 @@ function App() {
         <thead>
           <tr>
             <th> </th>
-            <th>1교시</th>
-            <th>2교시</th>
-            <th>3교시</th>
-            <th>4교시</th>
-            <th>5교시</th>
-            <th>6교시</th>
-            <th>7교시</th>
+            <th>월</th>
+            <th>화</th>
+            <th>수</th>
+            <th>목</th>
+            <th>금</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th>월</th>
-            {time[0]?.map((value) => (
-              <td>
-                {value.student_name
-                  ? `${value.course_name}/${value.student_name}`
-                  : `${value.course_name}/${value.professor_name}`}
-              </td>
+            <th>1교시</th>
+            {time[0]?.map((value, idx) => (
+              <td key={idx}>{value}</td>
             ))}
           </tr>
           <tr>
-            <th>화</th>
-            {time[1]?.map((value) => (
-              <td>
-                {value.student_name
-                  ? `${value.course_name}/${value.student_name}`
-                  : `${value.course_name}/${value.professor_name}`}
-              </td>
+            <th>2교시</th>
+            {time[1]?.map((value, idx) => (
+              <td key={idx}>{value}</td>
             ))}
           </tr>
           <tr>
-            <th>수</th>
-            {time[2]?.map((value) => (
-              <td>
-                {value.student_name
-                  ? `${value.course_name}/${value.student_name}`
-                  : `${value.course_name}/${value.professor_name}`}
-              </td>
+            <th>3교시</th>
+            {time[2]?.map((value, idx) => (
+              <td key={idx}>{value}</td>
             ))}
           </tr>
           <tr>
-            <th>목</th>
-            {time[3]?.map((value) => (
-              <td>
-                {value.student_name
-                  ? `${value.course_name}/${value.student_name}`
-                  : `${value.course_name}/${value.professor_name}`}
-              </td>
+            <th>4교시</th>
+            {time[3]?.map((value, idx) => (
+              <td key={idx}>{value}</td>
             ))}
           </tr>
           <tr>
-            <th>금</th>
-            {time[4]?.map((value) => (
-              <td>
-                {value.student_name
-                  ? `${value.course_name}/${value.student_name}`
-                  : `${value.course_name}/${value.professor_name}`}
-              </td>
+            <th>5교시</th>
+            {time[4]?.map((value, idx) => (
+              <td key={idx}>{value}</td>
+            ))}
+          </tr>
+          <tr>
+            <th>6교시</th>
+            {time[5]?.map((value, idx) => (
+              <td key={idx}>{value}</td>
+            ))}
+          </tr>
+          <tr>
+            <th>7교시</th>
+            {time[6]?.map((value, idx) => (
+              <td key={idx}>{value}</td>
             ))}
           </tr>
         </tbody>

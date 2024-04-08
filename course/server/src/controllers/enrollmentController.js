@@ -27,8 +27,8 @@ router.get("/course_management", async (req, res) => {
 
 router.post("/register_course", async (req, res) => {
   if (!req.body) res.redirect("/course_management");
-  const { name, professor, credit } = req.body;
-  await enrollmentService.createCourse(name, professor, credit);
+  const { name, credit } = req.body;
+  await enrollmentService.createCourse(name, credit);
   res.redirect("/course_management");
 });
 
@@ -46,23 +46,44 @@ router.get("/enrollment_management", async (req, res) => {
 router.get("/timetable/student/:name", async (req, res) => {
   const { name } = req.params;
   const lectures = await enrollmentService.getStudentLecture(name);
-  let a = [[], [], [], [], []];
+  let a = [
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+  ];
   for (const lecture of lectures) {
     if (lecture.day === "2025년 3월 5일") continue;
-    a[lecture.day].push(lecture);
-  }
-  for (let i = 0; i < 5; i++) {
-    a[i].sort(function (a, b) {
-      const aa = parseInt(a.start_time.substring(0, 2)) + a.credit;
-      const bb = parseInt(b.start_time.substring(0, 2)) + b.credit;
-      if (aa > bb) {
-        return 1;
-      }
-      if (aa < bb) {
-        return -1;
-      }
-      return 0;
-    });
+
+    let count = 0;
+    if (lecture.start_time.substring(0, 1) === "9") a[0][lecture.day] = lecture;
+    else if (lecture.start_time.substring(0, 2) === "10") {
+      count = 1;
+      a[1][lecture.day] = `${lecture.course_name}/${lecture.professor_name}`;
+    } else if (lecture.start_time.substring(0, 2) === "11") {
+      count = 2;
+      a[2][lecture.day] = `${lecture.course_name}/${lecture.professor_name}`;
+    } else if (lecture.start_time.substring(0, 2) === "12") {
+      count = 3;
+      a[3][lecture.day] = `${lecture.course_name}/${lecture.professor_name}`;
+    } else if (lecture.start_time.substring(0, 2) === "13") {
+      count = 4;
+      a[4][lecture.day] = `${lecture.course_name}/${lecture.professor_name}`;
+    } else if (lecture.start_time.substring(0, 2) === "14") {
+      count = 5;
+      a[5][lecture.day] = `${lecture.course_name}/${lecture.professor_name}`;
+    } else if (lecture.start_time.substring(0, 2) === "15") {
+      count = 6;
+      a[6][lecture.day] = `${lecture.course_name}/${lecture.professor_name}`;
+    }
+
+    for (let i = count; i < lecture.credit + count; i++) {
+      if (i >= 7) break;
+      a[i][lecture.day] = `${lecture.course_name}/${lecture.professor_name}`;
+    }
   }
   res.send(a);
 });
@@ -70,23 +91,44 @@ router.get("/timetable/student/:name", async (req, res) => {
 router.get("/timetable/professor/:name", async (req, res) => {
   const { name } = req.params;
   const lectures = await enrollmentService.getTeacherLecture(name);
-  let a = [[], [], [], [], []];
+  let a = [
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+  ];
   for (const lecture of lectures) {
     if (lecture.day === "2025년 3월 5일") continue;
-    a[lecture.day].push(lecture);
-  }
-  for (let i = 0; i < 5; i++) {
-    a[i].sort(function (a, b) {
-      const aa = parseInt(a.start_time.substring(0, 2)) + a.credit;
-      const bb = parseInt(b.start_time.substring(0, 2)) + b.credit;
-      if (aa > bb) {
-        return 1;
-      }
-      if (aa < bb) {
-        return -1;
-      }
-      return 0;
-    });
+
+    let count = 0;
+    if (lecture.start_time.substring(0, 1) === "9") a[0][lecture.day] = lecture;
+    else if (lecture.start_time.substring(0, 2) === "10") {
+      count = 1;
+      a[1][lecture.day] = `${lecture.course_name}/${lecture.student_name}`;
+    } else if (lecture.start_time.substring(0, 2) === "11") {
+      count = 2;
+      a[2][lecture.day] = `${lecture.course_name}/${lecture.student_name}`;
+    } else if (lecture.start_time.substring(0, 2) === "12") {
+      count = 3;
+      a[3][lecture.day] = `${lecture.course_name}/${lecture.student_name}`;
+    } else if (lecture.start_time.substring(0, 2) === "13") {
+      count = 4;
+      a[4][lecture.day] = `${lecture.course_name}/${lecture.student_name}`;
+    } else if (lecture.start_time.substring(0, 2) === "14") {
+      count = 5;
+      a[5][lecture.day] = `${lecture.course_name}/${lecture.student_name}`;
+    } else if (lecture.start_time.substring(0, 2) === "15") {
+      count = 6;
+      a[6][lecture.day] = `${lecture.course_name}/${lecture.student_name}`;
+    }
+
+    for (let i = count; i < lecture.credit + count; i++) {
+      if (i >= 7) break;
+      a[i][lecture.day] = `${lecture.course_name}/${lecture.student_name}`;
+    }
   }
   res.send(a);
 });
@@ -95,6 +137,7 @@ router.post("/register_enrollment", async (req, res) => {
   if (!req.body) res.redirect("/enrollment_management");
   const { student_id, lecture_id } = req.body;
   const [{ courseId }] = await enrollmentService.getCourseId(lecture_id);
+  console.log(student_id, courseId, lecture_id);
   await enrollmentService.createEnrollment(student_id, courseId, lecture_id);
   res.redirect("/enrollment_management");
 });
